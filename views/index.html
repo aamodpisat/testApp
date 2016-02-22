@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Chat App</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font: 13px Helvetica, Arial; }
+        form { background: rgba(135, 16, 241, 0.74); padding: 3px; position: fixed; bottom: 0; width: 100%; }
+        form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+        form button { width: 9%; background: rgb(60, 255, 103); border: none; padding: 10px; }
+        #messages { list-style-type: none; margin-bottom: 50px; padding: 0; }
+        #messages li { padding: 5px 10px; }
+        #messages li:nth-child(odd) { background: #ECD5D5; }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        var socket = io();
+        $(document).ready(function(){
+           $('#btn').on('click',function(){
+              socket.emit('chat message', $('#m').val());
+               console.log("Message sent");
+               $('#m').val('');
+               return false;
+           });
+
+            socket.on('chat', function(msg){
+                $('#messages').append($('<li>').text(msg.toString()));
+            });
+
+        });
+    </script>
+</head>
+<body>
+<ul id="messages"></ul>
+<form action="">
+    <input id="m" autocomplete="off" placeholder="Please enter your message here"/>
+    <button id="btn">Send</button>
+</form>
+</body>
+</html>
